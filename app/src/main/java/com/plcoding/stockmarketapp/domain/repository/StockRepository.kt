@@ -13,7 +13,7 @@ interface StockRepository {
         query: String
     ): Flow<Resource<List<CompanyListing>>>
 
-    suspend fun getIntadayInfo(
+    suspend fun getIntradayInfo(
         symbol: String
     ): Resource<List<IntradayInfo>>
 

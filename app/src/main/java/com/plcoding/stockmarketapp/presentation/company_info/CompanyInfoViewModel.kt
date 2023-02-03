@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CompanyInfoViewModel @Inject constructor(
-    private val repository: StockRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val repository: StockRepository
 ): ViewModel() {
 
     var state by mutableStateOf(CompanyInfoState())
@@ -26,7 +26,7 @@ class CompanyInfoViewModel @Inject constructor(
             val symbol = savedStateHandle.get<String>("symbol") ?: return@launch
             state = state.copy(isLoading = true)
             val companyInfoResult = async { repository.getCompanyInfo(symbol) }
-            val intraDayInfoResult = async { repository.getIntadayInfo(symbol) }
+            val intradayInfoResult = async { repository.getIntradayInfo(symbol) }
             when(val result = companyInfoResult.await()) {
                 is Resource.Success -> {
                     state = state.copy(
@@ -44,8 +44,7 @@ class CompanyInfoViewModel @Inject constructor(
                 }
                 else -> Unit
             }
-
-            when(val result = intraDayInfoResult.await()) {
+            when(val result = intradayInfoResult.await()) {
                 is Resource.Success -> {
                     state = state.copy(
                         stockInfos = result.data ?: emptyList(),
@@ -57,7 +56,7 @@ class CompanyInfoViewModel @Inject constructor(
                     state = state.copy(
                         isLoading = false,
                         error = result.message,
-                        stockInfos = emptyList()
+                        company = null
                     )
                 }
                 else -> Unit

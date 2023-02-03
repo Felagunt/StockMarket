@@ -12,6 +12,13 @@ interface StockApi {
         @Query("apikey") apiKey: String = API_KEY
     ): ResponseBody
 
+    //https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY_EXTENDED
+    // &symbol=IBM&interval=15min&slice=year1month1&apikey=demo
+
+    //https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo
+
+    //https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo&datatype=csv
+    //
     @GET("query?function=TIME_SERIES_INTRADAY&interval=60min")
     suspend fun getIntradayInfo(
         @Query("symbol") symbol: String,
